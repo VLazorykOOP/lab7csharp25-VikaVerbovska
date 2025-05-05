@@ -44,7 +44,6 @@ namespace Lab7CSharp
             this.label1.Size = new System.Drawing.Size(95, 18);
             this.label1.TabIndex = 0;
             this.label1.Text = "Lab 7.   C# ";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // Form1
             // 
