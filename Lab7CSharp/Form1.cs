@@ -222,22 +222,32 @@ namespace Lab7CSharp
 
             graphBox = new PictureBox
             {
-                Size = graphPanel.Size,
-                Location = new Point(0, 0),
+                Size = new Size(graphPanel.Width, graphPanel.Height - 50),
+                Location = new Point(0, 50),
                 BackColor = Color.White
             };
+
             graphPanel.Controls.Add(graphBox);
 
             Button fontBtn = new Button { Text = "Шрифт", Location = new Point(10, 10) };
             graphPanel.Controls.Add(fontBtn);
 
-            FontDialog fontDialog = new FontDialog();
+            FontDialog fontDialog = new FontDialog
+            {
+                ShowColor = true 
+            };
+            Font selectedFont = new Font("Arial", 12); // початковий шрифт
+            Brush fontBrush = Brushes.Black; // початковий колір тексту
 
             fontBtn.Click += (s, e) =>
             {
                 if (fontDialog.ShowDialog() == DialogResult.OK)
-                    graphBox.Font = fontDialog.Font;
+                {
+                    selectedFont = fontDialog.Font;
+                    fontBrush = new SolidBrush(fontDialog.Color); // колір із FontDialog
+                }
             };
+
 
             graphTimer = new Timer();
             graphTimer.Interval = 50;
@@ -263,6 +273,9 @@ namespace Lab7CSharp
                             nextX * scaleX,
                             graphBox.Height / 2 - nextY * scaleY);
                     }
+
+                    // Додаємо підпис функції з вибраним шрифтом
+                    g.DrawString("y = sin(x)/x", selectedFont, fontBrush, 10, graphBox.Height - 40);
                 }
 
                 graphBox.Image?.Dispose();
@@ -274,6 +287,7 @@ namespace Lab7CSharp
 
             this.Controls.Add(graphPanel);
         }
+
 
         private void CreateDrawingShapesPanel()
         {
@@ -299,7 +313,7 @@ namespace Lab7CSharp
             graphics.Clear(Color.White); // Очищуємо перед малюванням
 
             // Створюємо масив фігур
-            shapes = new Shape[5]; // Наприклад, 5 фігур
+            shapes = new Shape[5]; 
 
             // Створюємо випадкові фігури
             for (int i = 0; i < shapes.Length; i++)
